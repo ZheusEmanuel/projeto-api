@@ -1,0 +1,48 @@
+import express from "express";
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+
+let mangas = [
+    { id: 1, name: "Homunculus", genre: "Psychological, Horror", date: 2003, creator: "Hideo Yamamoto", distributor: "Shogakukan", originCountry: "Japan" },
+    { id: 2, name: "Gachiakuta", genre: "Action, Adventure", date: 2022, creator: "Kei Urana", distributor: "Kodansha", originCountry: "Japan" },
+    { id: 3, name: "Kagurabachi", genre: "Action, Supernatural", date: 2023, creator: "Takeru Hokazono", distributor: "Shueisha", originCountry: "Japan" },
+    { id: 4, name: "Chainsaw Man", genre: "Action, Dark Fantasy", date: 2018, creator: "Tatsuki Fujimoto", distributor: "Shueisha", originCountry: "Japan" }
+];
+
+app.get('/api/mangas', (req, res) => {
+    res.json(mangas);
+});
+
+app.get('/api/mangas/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const manga = mangas.find(m => m.id === id);
+    res.json(manga || { msg: "Mangá não encontrado" });
+});
+
+app.post('/api/mangas', (req, res) => {
+    const newManga = { id: mangas.length ? mangas[mangas.length - 1].id + 1 : 1, ...req.body };
+    mangas.push(newManga);
+    res.json({ msg: "Mangá adicionado", manga: newManga });
+});
+
+app.put('/api/mangas/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = mangas.findIndex(m => m.id === id);
+    if (index !== -1) {
+        mangas[index] = { ...mangas[index], ...req.body };
+        res.json({ msg: "Mangá atualizado", manga: mangas[index] });
+    } else {
+        res.json({ msg: "Mangá não encontrado" });
+    }
+});
+
+app.delete('/api/mangas/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    mangas = mangas.filter(m => m.id !== id);
+    res.json({ msg: `Mangá com ID ${id} deletado`, mangas });
+});
+
+app.listen(PORT, () => console.log(`O servidor está rodando na porta ${PORT}`));
