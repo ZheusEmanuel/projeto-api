@@ -1,3 +1,3 @@
 # projeto-api
 
-Projeto de API sobre Animes por Zheus Emanuel (01606693) e Luiz Antônio (01593583). Foi rodado usado o programa Insomnia.
+Projeto de API sobre Animes por Zheus Emanuel e Luiz Antônio. Usado o programa Insomnia.
